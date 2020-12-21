@@ -1,0 +1,55 @@
+- name: Create /etc/condor/condor_config.local
+  template:
+    src: condor_config.local.j2
+    dest: /etc/condor/condor_config.local
+    owner: root
+    group: root
+    mode: 0644
+  environment:
+    CONDOR_CONFIG: /etc/condor/condor_config.local
+  when:
+    - CLOUD_SITE_ID is defined
+    - HTCONDOR_CONFIG_GIT_REPO is defined
+
+- name: Remove /etc/condor/condor_ssh_to_job_sshd_config_template
+  file:
+    path: /etc/condor/condor_ssh_to_job_sshd_config_template
+    state: absent
+  when: 
+    - HTCONDOR_CONFIG_GIT_REPO is defined
+
+- name: Get pool password file
+  shell: "condor_config_val SEC_PASSWORD_FILE"
+  register: SEC_PASSWORD_FILE
+  when:
+    - HTCONDOR_POOL_PASSWORD is defined
+
+- name: Add directory for the pool password
+  file:
+    path: "{{ SEC_PASSWORD_FILE.stdout | dirname }}"
+    recurse: yes
+    state: directory
+    mode: "0755"
+  when:
+    - HTCONDOR_POOL_PASSWORD is defined
+
+- name: Set mode for SEC_PASSWORD_FILE
+  file:
+    path: "{{ SEC_PASSWORD_FILE.stdout }}"
+    state: touch
+    mode: "0600"
+
+- name: Add HTCondor Pool Password
+  copy:
+    dest: "{{ SEC_PASSWORD_FILE.stdout }}"
+    content: "{{ HTCONDOR_POOL_PASSWORD }}"
+
+#- name: Add HTCondor Pool Password
+#  vars:
+#    ansible_python_interpreter: /usr/bin/python3
+#  expect:
+#    command: /bin/bash -c "condor_store_cred add -c -f {{ SEC_PASSWORD_FILE.stdout }}"
+#    responses:
+#      "Enter password:": "{{ HTCONDOR_POOL_PASSWORD }}"
+#  when:
+#    - HTCONDOR_POOL_PASSWORD is defined
