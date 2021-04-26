@@ -2,7 +2,7 @@ FROM centos:7
 MAINTAINER Manuel Giffels <giffels@gmail.com>
 
 RUN rpm --import http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
-RUN yum-config-manager --add-repo http://research.cs.wisc.edu/htcondor/yum/repo.d/htcondor-stable-rhel7.repo
+RUN yum install -y https://research.cs.wisc.edu/htcondor/repo/9.0/htcondor-release-current.el7.noarch.rpm
 
 RUN yum -y install epel-release && yum clean all
 RUN yum -y install condor \
