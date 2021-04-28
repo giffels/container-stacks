@@ -16,7 +16,7 @@ RUN yum -y install condor \
 RUN python3.6 -m pip install --no-cache-dir condor_git_config pexpect
 
 # Add ansible community collection
-RUN ansible-galaxy collection install community.general
+RUN ansible-galaxy collection install community.general -p /usr/share/ansible/collections
 
 # Add Tini
 ENV TINI_VERSION v0.19.0
@@ -28,4 +28,4 @@ COPY pilot_execute.sh /srv/pilot_execute.sh
 RUN chmod +x /srv/pilot_execute.sh
 
 WORKDIR /srv
-ENTRYPOINT ["/tini", "--", "/srv/pilot_execute.sh"]
+ENTRYPOINT ["/tini", "-s", "--", "/srv/pilot_execute.sh"]
