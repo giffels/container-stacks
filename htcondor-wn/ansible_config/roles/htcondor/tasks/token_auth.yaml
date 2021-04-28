@@ -1,0 +1,68 @@
+- name: Get token system directory
+  shell: "condor_config_val SEC_TOKEN_SYSTEM_DIRECTORY"
+  register: SEC_TOKEN_SYSTEM_DIRECTORY
+
+- name: Get token directory
+  shell: "condor_config_val SEC_TOKEN_DIRECTORY"
+  register: SEC_TOKEN_DIRECTORY
+
+- name: Get token password directory
+  shell: "condor_config_val SEC_PASSWORD_DIRECTORY"
+  register: SEC_PASSWORD_DIRECTORY
+
+- name: Add directory for token passwords
+  file:
+    path: "{{ SEC_PASSWORD_DIRECTORY.stdout }}"
+    recurse: yes
+    state: directory
+    mode: "0600"
+  when:
+    - HTCONDOR_TOKEN_PASSWORD is defined
+
+- name: Add system directory for tokens
+  file:
+    path: "{{ SEC_TOKEN_SYSTEM_DIRECTORY.stdout }}"
+    recurse: yes
+    state: directory
+    mode: "0600"
+  when:
+    - HTCONDOR_TOKEN is defined
+    - SEC_TOKEN_SYSTEM_DIRECTORY.stdout | length > 0
+
+- name: Add directory for tokens
+  file:
+    path: "{{ SEC_TOKEN_DIRECTORY.stdout }}"
+    recurse: yes
+    state: directory
+    mode: "0600"
+  when:
+    - HTCONDOR_TOKEN is defined
+    - SEC_TOKEN_DIRECTORY.stdout | length > 0
+
+- name: Add tokens to directory
+  vars:
+    directories:
+      - "{{ SEC_TOKEN_SYSTEM_DIRECTORY.stdout }}"
+      - "{{ SEC_TOKEN_DIRECTORY.stdout }}"
+  copy:
+    dest: "{{ item[1] + item[0].key }}"
+    content: "{{ item[0].value }}"
+    mode: "0600"
+  loop: "{{ HTCONDOR_TOKEN | dict2items | product(directories)|list }}"
+  loop_control:
+    label: "Adding tokens to {{ item[1] }}"
+  when:
+    - HTCONDOR_TOKEN is defined
+    - item[1] | length > 0
+
+- name: Add token passwords to directory
+  copy:
+    dest:  "{{ SEC_PASSWORD_DIRECTORY.stdout + item.key }}"
+    content: "{{ item.value }}"
+    mode: "0600"
+  loop: "{{ HTCONDOR_TOKEN_PASSWORD | dict2items }}"
+  loop_control:
+    label: "Adding token password to {{ SEC_PASSWORD_DIRECTORY.stdout + item.key }}"
+  when:
+    - HTCONDOR_TOKEN_PASSWORD is defined
+    - item.key | length > 0

@@ -1,0 +1,19 @@
+- name: Create /etc/condor/condor_config.local
+  template:
+    src: condor_config.local.j2
+    dest: /etc/condor/condor_config.local
+    owner: root
+    group: root
+    mode: 0644
+  environment:
+    CONDOR_CONFIG: /etc/condor/condor_config.local
+  when:
+    - CLOUD_SITE_ID is defined
+    - HTCONDOR_CONFIG_GIT_REPO is defined
+
+- name: Remove /etc/condor/condor_ssh_to_job_sshd_config_template
+  file:
+    path: /etc/condor/condor_ssh_to_job_sshd_config_template
+    state: absent
+  when: 
+    - HTCONDOR_CONFIG_GIT_REPO is defined

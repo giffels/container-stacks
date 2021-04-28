@@ -1,0 +1,17 @@
+- name: Ensure CLOUD_SITE_CONFIG_PATH exists 
+  file:
+    path: "{{ CLOUD_SITE_CONFIG_PATH }}"
+    owner: root
+    group: root
+    mode: 0755
+    state: directory
+  when: CLOUD_SITE_ID is defined
+
+- name: Create CLOUD_SITE_ID_FILE
+  template:
+    src: site-id.cfg.j2
+    dest: "{{ CLOUD_SITE_ID_FILE }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: CLOUD_SITE_ID is defined
