@@ -15,7 +15,7 @@
     path: "{{ SEC_PASSWORD_DIRECTORY.stdout }}"
     recurse: yes
     state: directory
-    mode: "0600"
+    mode: 0700
   when:
     - HTCONDOR_TOKEN_PASSWORD is defined
 
@@ -24,7 +24,7 @@
     path: "{{ SEC_TOKEN_SYSTEM_DIRECTORY.stdout }}"
     recurse: yes
     state: directory
-    mode: "0600"
+    mode: 0700
   when:
     - HTCONDOR_TOKEN is defined
     - SEC_TOKEN_SYSTEM_DIRECTORY.stdout | length > 0
@@ -34,7 +34,7 @@
     path: "{{ SEC_TOKEN_DIRECTORY.stdout }}"
     recurse: yes
     state: directory
-    mode: "0600"
+    mode: 0700
   when:
     - HTCONDOR_TOKEN is defined
     - SEC_TOKEN_DIRECTORY.stdout | length > 0
