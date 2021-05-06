@@ -4,14 +4,10 @@
    recurse: yes
    state: directory
    mode: "1777"
-   owner: condor
-   group: condor
-
+   
 - name: Create spool directory
   file:
     path: /var/lib/condor/spool/local_univ_execute
     recurse: yes
     state: directory
     mode: 0755
-    owner: condor
-    group: condor
