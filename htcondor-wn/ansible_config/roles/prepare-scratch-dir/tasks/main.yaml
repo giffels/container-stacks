@@ -8,3 +8,4 @@
     - /scratch/var/log/condor
     - /scratch/var/lib/condor
     - /scratch/etc/cloud
+    - /scratch/var/lock

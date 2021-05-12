@@ -6,11 +6,13 @@ RUN mkdir -p /scratch/etc/condor
 RUN mkdir -p /scratch/var/log/condor
 RUN mkdir -p /scratch/var/lib/condor
 RUN mkdir -p /scratch/etc/cloud
+RUN mkdir -p /scratch/var/lock
 
 RUN ln -s /scratch/etc/condor /etc/condor 
 RUN ln -s /scratch/var/log/condor /var/log/condor 
 RUN ln -s /scratch/var/lib/condor /var/lib/condor 
 RUN ln -s /scratch/etc/cloud /etc/cloud
+RUN ln -s /scratch/var/lock /var/lock
 
 RUN rpm --import http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
 RUN yum install -y https://research.cs.wisc.edu/htcondor/repo/9.0/htcondor-release-current.el7.noarch.rpm
