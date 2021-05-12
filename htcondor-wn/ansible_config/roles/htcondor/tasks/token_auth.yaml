@@ -1,14 +1,17 @@
 - name: Get token system directory
-  shell: "condor_config_val SEC_TOKEN_SYSTEM_DIRECTORY"
+  command: "condor_config_val SEC_TOKEN_SYSTEM_DIRECTORY"
   register: SEC_TOKEN_SYSTEM_DIRECTORY
+  changed_when: SEC_TOKEN_SYSTEM_DIRECTORY.rc == 0
 
 - name: Get token directory
-  shell: "condor_config_val SEC_TOKEN_DIRECTORY"
+  command: "condor_config_val SEC_TOKEN_DIRECTORY"
   register: SEC_TOKEN_DIRECTORY
+  changed_when: SEC_TOKEN_DIRECTORY.rc == 0
 
 - name: Get token password directory
-  shell: "condor_config_val SEC_PASSWORD_DIRECTORY"
+  command: "condor_config_val SEC_PASSWORD_DIRECTORY"
   register: SEC_PASSWORD_DIRECTORY
+  changed_when: SEC_PASSWORD_DIRECTORY.rc == 0
 
 - name: Add directory for token passwords
   file:
