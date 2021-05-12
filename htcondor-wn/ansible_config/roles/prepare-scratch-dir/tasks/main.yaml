@@ -9,3 +9,4 @@
     - /scratch/var/lib/condor
     - /scratch/etc/cloud
     - /scratch/var/lock/condor
+    - /scratch/var/run/condor
