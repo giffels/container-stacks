@@ -56,5 +56,12 @@ directory into `/srv/config`.
 docker run -v $PWD/config:/srv/config htcondor-wn:latest
 ```
 
+In case you want to use a read-only `singularity` container, you need to bind mount
+a local directory into `/scratch` as well.
+
+```shell
+singularity run --userns -B $PWD/config:/srv/config -B ${SOMELOCALDIR}:/scratch /cvmfs/unpacked.cern.ch/registry.hub.docker.com/matterminers/htcondor-wn\:latest
+```
+
 The HTCondor is started automatically and HTCondor is configured using ansible
 and the static configuration in your Git repository.
