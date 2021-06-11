@@ -1,0 +1,43 @@
+name: Docker Builds
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  docker-builds:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        containers: ['wlcg-wn', 'htcondor-wn']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        if: github.repository == 'MatterMiners/container-stacks' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        if: github.repository == 'MatterMiners/container-stacks' && github.ref == 'refs/heads/main'
+        id: docker_build_push
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.containers }}
+          push: true
+          file: ${{ matrix.containers }}/Dockerfile
+          tags: matterminers/${{ matrix.containers }}:latest
+      - name: Build
+        if: github.repository != 'MatterMiners/container-stacks' || ( github.repository == 'MatterMiners/container-stacks' && github.ref != 'refs/heads/main')
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.containers }}
+          push: false
+          file: ${{ matrix.containers }}/Dockerfile
+          tags: matterminers/${{ matrix.containers }}:latest
