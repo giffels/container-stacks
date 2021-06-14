@@ -7,11 +7,22 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
+  setup-docker-builds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get containers to build
+        id: get_containers
+        run: python3 -c 'import json; import os; print("::set-output name=containers::%s" % json.dumps([os.path.normpath(dirpath) for dirpath, dirnames, filenames in os.walk(".") if "Dockerfile" in filenames]))'
+    outputs:
+      containers: ${{ steps.get_containers.outputs.containers }}
+
   docker-builds:
+    needs: setup-docker-builds
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        containers: ['wlcg-wn', 'htcondor-wn']
+        containers: ${{ fromJSON(needs.setup-docker-builds.outputs.containers) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
