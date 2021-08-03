@@ -1,5 +1,5 @@
 FROM centos:7
-MAINTAINER Rene Caspart <rene.caspart@kit.edu>
+LABEL maintainer="Rene Caspart <rene.caspart@kit.edu>, Manuel Giffels <giffels@gmail.com>"
 
 RUN yum update -y && yum clean -y all
 RUN yum install -y epel-release \
@@ -14,4 +14,9 @@ RUN sed -i "s%mount devpts = yes%mount devpts = no%g" /etc/singularity/singulari
 
 RUN rm -rf /etc/grid-security/certificates && ln -s /cvmfs/grid.cern.ch/etc/grid-security/certificates/ /etc/grid-security/certificates
 
-RUN echo "export MACHINEFEATURES=/etc/machinefeatures" > /etc/profile.d/machinefeatures.sh
+RUN echo "export MACHINEFEATURES=/etc/machinefeatures" > /etc/profile.d/grid_env.sh
+RUN echo "export VO_ATLAS_SW_DIR=/cvmfs/atlas.cern.ch" >> /etc/profile.d/grid_env.sh
+RUN echo "export VO_AUGER_SW_DIR=/cvmfs/auger.egi.eu" >> /etc/profile.d/grid_env.sh
+RUN echo "export VO_BELLE_SW_DIR=/cvmfs/belle.cern.ch/sl6" >> /etc/profile.d/grid_env.sh
+RUN echo "export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch" >> /etc/profile.d/grid_env.sh
+RUN echo "export VO_LHCB_SW_DIR=/cvmfs/lhcb.cern.ch" >> /etc/profile.d/grid_env.sh
