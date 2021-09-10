@@ -9,6 +9,11 @@ RUN yum update -y
 RUN yum install -y singularity cvmfs HEP_OSlibs wn tcsh && \
     yum clean -y all
 
+# Fix for broken dcache-srmclient-6.2.24-1.noarch
+RUN yum install -y java-11-openjdk java-11-openjdk-devel java-11-openjdk-headless && \
+    yum clean -y all
+RUN alternatives --set java /usr/lib/jvm/java-11-openjdk-11.0.12.0.7-0.el7_9.x86_64/bin/java
+
 RUN sed -i "s%allow setuid = yes%allow setuid = no%g" /etc/singularity/singularity.conf
 RUN sed -i "s%mount devpts = yes%mount devpts = no%g" /etc/singularity/singularity.conf
 
