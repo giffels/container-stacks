@@ -23,10 +23,15 @@ RUN yum -y install epel-release && yum clean all
 RUN yum -y install condor \
                    python36 \
                    ansible \
-                   git \
-                   singularity \
+                   http://ekpwww.etp.kit.edu/~giffels/singularity-3.8.0-1.el7.x86_64.rpm \
                    tsocks \
      && yum clean all
+
+# Get a newer Git version to use Git Protocol v2 
+RUN yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm \
+    && yum-config-manager --disable endpoint \
+    && yum -y install --enablerepo endpoint git \
+    && yum clean all
 
 RUN python3.6 -m pip install --no-cache-dir condor_git_config pexpect
 
