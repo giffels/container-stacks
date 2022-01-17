@@ -47,5 +47,7 @@ COPY ansible_config /srv/ansible_config
 COPY pilot_execute.sh /srv/pilot_execute.sh
 RUN chmod +x /srv/pilot_execute.sh
 
+COPY singularity_nv_setup.sh /etc/profile.d/singularity_nv_setup.sh
+
 WORKDIR /srv
 ENTRYPOINT ["/tini", "-s", "--", "/srv/pilot_execute.sh"]
