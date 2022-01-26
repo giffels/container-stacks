@@ -7,11 +7,10 @@ TMPD=$(mktemp -d)
 
 cat << EOF > ${TMPD}/ldconfig
 #!/bin/bash
-exec /usr/sbin/ldconfig -C ${TMPD}/ld.so.cache \$@ > ${TMPD}/ldconfig
+exec /usr/sbin/ldconfig -C ${TMPD}/ld.so.cache \$@
 EOF
 
 chmod +x ${TMPD}/ldconfig
 
 PATH=${TMPD}:${PATH}
 ldconfig ${LD_LIBRARY_PATH}
-
