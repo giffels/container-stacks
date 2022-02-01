@@ -26,4 +26,5 @@ RUN echo "export VO_BELLE_SW_DIR=/cvmfs/belle.cern.ch/sl6" >> /etc/profile.d/gri
 RUN echo "export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch" >> /etc/profile.d/grid_env.sh
 RUN echo "export VO_LHCB_SW_DIR=/cvmfs/lhcb.cern.ch" >> /etc/profile.d/grid_env.sh
 
+COPY ldconfig_wrapper.sh /usr/local/bin/ldconfig
 COPY singularity_nv_setup.sh /etc/profile.d/singularity_nv_setup.sh
