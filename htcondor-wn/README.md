@@ -8,16 +8,16 @@ this image supports HTCondor's pool password and token authentication.
 In order to configure your worker node, you need to create a directory
 containing an yaml containing the supported ansible variables described below.
 
-| Variable                           | Description                                                                          |
-|------------------------------------|--------------------------------------------------------------------------------------|
-| HTCONDOR_CONFIG_GIT_REPO           | URL pointing to the Git repository containing the HTCondor configuration             |
-| HTCONDOR_CONFIG_GIT_CACHE_PATH     | Cache path location on destination system (optional, default=/etc/condor/config.git) |
-| GIT_USER                           | Username to use when accessing the Git repository above                              |
-| GIT_TOKEN                          | Token/Password to use when accessing the Git repository above                        |
-| CLOUD_SITE_ID                      | We are using `condor-git-config` white listing to support multiple cloud sites       |
-| HTCONDOR_POOL_PASSWORD (Optional)  | Pool password to authenticate the worker node with the HTCondor cluster              |
-| HTCONDOR_TOKEN (Optional)          | Token to authenticate the worker node against the HTCondor cluster                   |
-| HTCONDOR_TOKEN_PASSWORD (Optional) | Token password to authenticate the HTCondor cluster against the worker node          |
+| Variable                           | Description                                                                                                                |
+|------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
+| HTCONDOR_CONFIG_GIT_REPO           | URL pointing to the Git repository containing the HTCondor configuration                                                   |
+| HTCONDOR_CONFIG_GIT_CACHE_PATH     | Cache path location on destination system (optional, default=/etc/condor/config.git)                                       |
+| GIT_USER                           | Username to use when accessing the Git repository above                                                                    |
+| GIT_TOKEN                          | Token/Password to use when accessing the Git repository above                                                              |
+| CLOUD_SITE_ID                      | We are using `condor-git-config` white listing to support multiple cloud sites                                             |
+| HTCONDOR_POOL_PASSWORD (Optional)  | Pool password to authenticate the worker node with the HTCondor cluster (optional base64 support for binary passwords)     |
+| HTCONDOR_TOKEN (Optional)          | Token to authenticate the worker node against the HTCondor cluster (optional base64 support for binary passwords)          |
+| HTCONDOR_TOKEN_PASSWORD (Optional) | Token password to authenticate the HTCondor cluster against the worker node (optional base64 support for binary passwords) |
 
 ## Example configurations
 

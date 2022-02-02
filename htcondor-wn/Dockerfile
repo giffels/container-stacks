@@ -28,7 +28,7 @@ RUN yum -y install condor \
      && yum clean all
 
 # Get a newer Git version to use Git Protocol v2 
-RUN yum -y install https://packages.endpoint.com/rhel/7/os/x86_64/endpoint-repo-1.9-1.x86_64.rpm \
+RUN yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo-1.10-1.x86_64.rpm \
     && yum-config-manager --disable endpoint \
     && yum -y install --enablerepo endpoint git \
     && yum clean all
@@ -47,5 +47,8 @@ COPY ansible_config /srv/ansible_config
 COPY pilot_execute.sh /srv/pilot_execute.sh
 RUN chmod +x /srv/pilot_execute.sh
 
-WORKDIR /srv
+COPY ldconfig_wrapper.sh /usr/local/bin/ldconfig
+COPY singularity_nv_setup.sh /etc/profile.d/singularity_nv_setup.sh
+
+WORKDIR /scratch
 ENTRYPOINT ["/tini", "-s", "--", "/srv/pilot_execute.sh"]

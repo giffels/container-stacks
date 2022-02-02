@@ -47,10 +47,7 @@
     directories:
       - "{{ SEC_TOKEN_SYSTEM_DIRECTORY.stdout }}"
       - "{{ SEC_TOKEN_DIRECTORY.stdout }}"
-  copy:
-    dest: "{{ item[1] + item[0].key }}"
-    content: "{{ item[0].value }}"
-    mode: "0600"
+  include_tasks: add_token.yaml
   loop: "{{ HTCONDOR_TOKEN | dict2items | product(directories)|list }}"
   loop_control:
     label: "Adding tokens to {{ item[1] }}"
@@ -59,10 +56,7 @@
     - item[1] | length > 0
 
 - name: Add token passwords to directory
-  copy:
-    dest:  "{{ SEC_PASSWORD_DIRECTORY.stdout + item.key }}"
-    content: "{{ item.value }}"
-    mode: "0600"
+  include_tasks: add_token_password.yaml
   loop: "{{ HTCONDOR_TOKEN_PASSWORD | dict2items }}"
   loop_control:
     label: "Adding token password to {{ SEC_PASSWORD_DIRECTORY.stdout + item.key }}"
