@@ -20,7 +20,7 @@ RUN sed -i "s%mount devpts = yes%mount devpts = no%g" /etc/apptainer/apptainer.c
 RUN rm -rf /etc/grid-security/certificates && ln -s /cvmfs/grid.cern.ch/etc/grid-security/certificates/ /etc/grid-security/certificates
 
 RUN echo "export MACHINEFEATURES=/etc/machinefeatures" > /etc/profile.d/grid_env.sh
-RUN echo "export VO_ATLAS_SW_DIR=/cvmfs/atlas.cern.ch" >> /etc/profile.d/grid_env.sh
+RUN echo "export VO_ATLAS_SW_DIR=/cvmfs/atlas.cern.ch/repo/sw" >> /etc/profile.d/grid_env.sh
 RUN echo "export VO_AUGER_SW_DIR=/cvmfs/auger.egi.eu" >> /etc/profile.d/grid_env.sh
 RUN echo "export VO_BELLE_SW_DIR=/cvmfs/belle.cern.ch/sl6" >> /etc/profile.d/grid_env.sh
 RUN echo "export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch" >> /etc/profile.d/grid_env.sh
