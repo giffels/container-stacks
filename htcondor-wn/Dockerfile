@@ -9,9 +9,9 @@ RUN mkdir -p /scratch/etc/cloud
 RUN mkdir -p /scratch/var/lock/condor
 RUN mkdir -p /scratch/var/run/condor
 
-RUN ln -s /scratch/etc/condor /etc/condor 
-RUN ln -s /scratch/var/log/condor /var/log/condor 
-RUN ln -s /scratch/var/lib/condor /var/lib/condor 
+RUN ln -s /scratch/etc/condor /etc/condor
+RUN ln -s /scratch/var/log/condor /var/log/condor
+RUN ln -s /scratch/var/lib/condor /var/lib/condor
 RUN ln -s /scratch/etc/cloud /etc/cloud
 RUN ln -s /scratch/var/lock/condor /var/lock/condor
 RUN ln -s /scratch/var/run/condor /var/run/condor
@@ -28,7 +28,7 @@ RUN yum -y install condor \
                    openssh-server.x86_64 \
      && yum clean all
 
-# Get a newer Git version to use Git Protocol v2 
+# Get a newer Git version to use Git Protocol v2
 RUN yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo-1.10-1.x86_64.rpm \
     && yum-config-manager --disable endpoint \
     && yum -y install --enablerepo endpoint git \
@@ -47,9 +47,6 @@ RUN chmod +x /tini
 COPY ansible_config /srv/ansible_config
 COPY pilot_execute.sh /srv/pilot_execute.sh
 RUN chmod +x /srv/pilot_execute.sh
-
-COPY ldconfig_wrapper.sh /usr/local/bin/ldconfig
-COPY singularity_nv_setup.sh /etc/profile.d/singularity_nv_setup.sh
 
 # Tell sshd not to chroot inside the container
 RUN sed -i '/^UsePrivilegeSeparation/{h;s/.*/UsePrivilegeSeparation no/g};${x;/^$/{s//UsePrivilegeSeparation no/;H};x}' /usr/lib64/condor/condor_ssh_to_job_sshd_config_template
