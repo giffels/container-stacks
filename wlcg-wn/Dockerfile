@@ -10,7 +10,8 @@ RUN yum install -y apptainer cvmfs HEP_OSlibs wn tcsh && \
     yum clean -y all
 
 # Fix pseudoterminal in unpriv. namespace; see https://github.com/apptainer/apptainer/issues/297
-RUN yum install -y glibc-grantpt-fix
+RUN yum install -y glibc-grantpt-fix && \
+    yum clean -y all
 
 # Fix for broken dcache-srmclient-6.2.24-1.noarch
 RUN yum install -y java-11-openjdk java-11-openjdk-devel java-11-openjdk-headless && \
