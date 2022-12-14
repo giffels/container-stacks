@@ -12,6 +12,7 @@ RUN yum install -y apptainer cvmfs HEP_OSlibs wn tcsh && \
 # Fix pseudoterminal in unpriv. namespace; see https://github.com/apptainer/apptainer/issues/297
 RUN yum install -y glibc-grantpt-fix && \
     yum clean -y all
+RUN echo "libc_grantpt_fix.so  # use pty fix glibc-grantpt-fix" >> /etc/ld.so.preload
 
 # Fix for broken dcache-srmclient-6.2.24-1.noarch
 RUN yum install -y java-11-openjdk java-11-openjdk-devel java-11-openjdk-headless && \
@@ -30,4 +31,3 @@ RUN echo "export VO_BELLE_SW_DIR=/cvmfs/belle.cern.ch/sl6" >> /etc/profile.d/gri
 RUN echo "export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch" >> /etc/profile.d/grid_env.sh
 RUN echo "export VO_LHCB_SW_DIR=/cvmfs/lhcb.cern.ch" >> /etc/profile.d/grid_env.sh
 RUN echo "unset HOME  # To support ATLAS submission" >> /etc/profile.d/grid_env.sh
-RUN echo "export LD_PRELOAD=/usr/lib64/libc_grantpt_fix.so  # use pty fix glibc-grantpt-fix" >> /etc/profile.d/grid_env.sh
