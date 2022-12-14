@@ -30,3 +30,4 @@ RUN echo "export VO_BELLE_SW_DIR=/cvmfs/belle.cern.ch/sl6" >> /etc/profile.d/gri
 RUN echo "export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch" >> /etc/profile.d/grid_env.sh
 RUN echo "export VO_LHCB_SW_DIR=/cvmfs/lhcb.cern.ch" >> /etc/profile.d/grid_env.sh
 RUN echo "unset HOME  # To support ATLAS submission" >> /etc/profile.d/grid_env.sh
+RUN echo "export LD_PRELOAD=/usr/lib64/libc_grantpt_fix.so  # use pty fix glibc-grantpt-fix" >> /etc/profile.d/grid_env.sh
