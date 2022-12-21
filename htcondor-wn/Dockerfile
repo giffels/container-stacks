@@ -40,6 +40,11 @@ RUN yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-re
 
 RUN python3.6 -m pip install --no-cache-dir condor_git_config pexpect
 
+# Fix pseudoterminal in unpriv. namespace; see https://github.com/apptainer/apptainer/issues/297
+RUN yum install -y http://linuxsoft.cern.ch/wlcg/centos7/x86_64/glibc-grantpt-fix-1.0.0-1.el7.cern.x86_64.rpm && \
+    yum clean -y all
+RUN echo "libc_grantpt_fix.so  # use pty fix glibc-grantpt-fix" >> /etc/ld.so.preload
+
 # Add ansible community collection
 RUN ansible-galaxy collection install community.general -p /usr/share/ansible/collections
 
