@@ -1,5 +1,5 @@
 - name: Add addtional scripts
-  copy: "{{ item.value }}"
+  include_tasks: add_scripts.yaml
   loop: "{{ ADDITIONAL_SCRIPTS | dict2items  }}"
   loop_control:
     label: "Adding {{ item.key }} to {{ item.value.dest }}"

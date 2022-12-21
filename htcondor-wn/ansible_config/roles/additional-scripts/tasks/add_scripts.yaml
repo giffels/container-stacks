@@ -1,0 +1,7 @@
+- name: Make sure destination directory exists
+  file:
+    path: "{{ item.value.dest | dirname }}"
+    state: directory
+
+- name: Add addtional script
+  copy: "{{ item.value }}"
