@@ -3,7 +3,8 @@
   gather_facts: yes
   roles:
     - { role: prepare-scratch-dir}
-    - { role: add-container-config } 
+    - { role: add-container-config }
     - { role: cloud-site }
     - { role: git-credentials }
+    - { role: additional-scripts}
     - { role: htcondor }

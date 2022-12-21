@@ -1,0 +1,7 @@
+- name: Add addtional scripts
+  copy: "{{ item.value }}"
+  loop: "{{ ADDITIONAL_SCRIPTS | dict2items  }}"
+  loop_control:
+    label: "Adding {{ item.key }} to {{ item.value.dest }}"
+  when:
+    - ADDITIONAL_SCRIPTS is defined

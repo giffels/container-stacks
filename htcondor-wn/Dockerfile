@@ -16,6 +16,10 @@ RUN ln -s /scratch/etc/cloud /etc/cloud
 RUN ln -s /scratch/var/lock/condor /var/lock/condor
 RUN ln -s /scratch/var/run/condor /var/run/condor
 
+# Create writeable profile.d directory and source content via /etc/profile.d/scratch_profiles.sh
+RUN mkdir -p /scratch/etc/profile.d
+ADD scratch_profiles.sh /etc/profile.d/scratch_profiles.sh
+
 RUN rpm --import http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
 RUN yum install -y https://research.cs.wisc.edu/htcondor/repo/9.0/htcondor-release-current.el7.noarch.rpm
 
