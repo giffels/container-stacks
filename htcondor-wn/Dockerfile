@@ -51,5 +51,8 @@ RUN chmod +x /srv/pilot_execute.sh
 # Tell sshd not to chroot inside the container
 RUN sed -i '/^UsePrivilegeSeparation/{h;s/.*/UsePrivilegeSeparation no/g};${x;/^$/{s//UsePrivilegeSeparation no/;H};x}' /usr/lib64/condor/condor_ssh_to_job_sshd_config_template
 
+# To avoid problems with tty in user namepspaces (https://bugzilla.mindrot.org/show_bug.cgi?id=2813): suppress tty from /etc/group
+RUN sed -i '/tty/d' /etc/group
+
 WORKDIR /scratch
 ENTRYPOINT ["/tini", "-s", "--", "/srv/pilot_execute.sh"]
