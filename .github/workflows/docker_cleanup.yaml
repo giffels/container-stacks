@@ -1,6 +1,7 @@
 name: Docker Cleanup
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
 
@@ -26,7 +27,7 @@ jobs:
         with:
           go-version: '>=1.19.0'
       - name: Install hub-tool
-        run: GO111MODULE=on go get github.com/docker/hub-tool
+        run: GO111MODULE=on go install github.com/docker/hub-tool@latest
       - name: Login to docker hub
         run: hub-tool login ${{ secrets.DOCKERHUB_USERNAME }} <<< ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Cleanup inactive image on docker hub
