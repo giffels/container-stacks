@@ -29,6 +29,7 @@ jobs:
       - name: Install hub-tool
         run: GO111MODULE=on go install github.com/docker/hub-tool@latest
       - name: Login to docker hub
+        shell: 'script -q -e -c "bash {0}"'
         run: hub-tool login ${{ secrets.DOCKERHUB_USERNAME }} <<< ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Cleanup inactive image on docker hub
         run: for tag in $(hub-tool tag ls matterminers/${{ matrix.containers }} --all | grep inactive | awk '{print $1}' ); do hub-tool tag rm -f $tag; done
