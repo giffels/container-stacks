@@ -32,7 +32,7 @@ RUN dnf -y install condor \
 RUN dnf -y install https://packages.endpointdev.com/rhel/8/main/x86_64/endpoint-repo.noarch.rpm \
     && dnf config-manager --disable endpoint \
     && dnf -y install --enablerepo endpoint git \
-    && yum clean all
+    && dnf clean all
 
 RUN python3.9 -m pip install --no-cache-dir condor_git_config pexpect
 
