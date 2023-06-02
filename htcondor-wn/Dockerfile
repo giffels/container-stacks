@@ -26,6 +26,8 @@ RUN dnf -y install condor \
                    ansible \
                    apptainer \
                    openssh-server.x86_64 \
+                   langpacks-en \
+                   glibc-langpack-en \
      && dnf clean all
 
 # Get a newer Git version to use Git Protocol v2
@@ -53,6 +55,11 @@ RUN sed -i '/^UsePrivilegeSeparation/{h;s/.*/UsePrivilegeSeparation no/g};${x;/^
 
 # To avoid problems with tty in user namepspaces (https://bugzilla.mindrot.org/show_bug.cgi?id=2813): suppress tty from /etc/group
 RUN sed -i '/tty/d' /etc/group
+
+# Set language settings, ansible otherwise complains
+ENV LC_ALL en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
 
 WORKDIR /scratch
 ENTRYPOINT ["/tini", "-s", "--", "/srv/pilot_execute.sh"]
