@@ -1,23 +1,17 @@
-FROM centos:7
-LABEL maintainer="Rene Caspart <rene.caspart@kit.edu>, Manuel Giffels <giffels@gmail.com>"
+FROM rockylinux:9
+LABEL maintainer="Manuel Giffels <giffels@gmail.com>"
 
-RUN yum update -y && yum clean -y all
-RUN yum install -y epel-release \
-                   https://linuxsoft.cern.ch/wlcg/centos7/x86_64/wlcg-repo-1.0.0-1.el7.noarch.rpm \
-                   http://repository.egi.eu/sw/production/umd/4/centos7/x86_64/updates/umd-release-4.1.3-1.el7.centos.noarch.rpm
-RUN yum update -y
-RUN yum install -y apptainer cvmfs HEP_OSlibs wn tcsh python3 && \
-    yum clean -y all
+RUN dnf update -y && dnf clean -y all
+RUN dnf install -y epel-release \
+                   https://linuxsoft.cern.ch/wlcg/el9/x86_64/wlcg-repo-1.0.0-1.el9.noarch.rpm
+                   # http://repository.egi.eu/sw/production/umd/4/centos7/x86_64/updates/umd-release-4.1.3-1.el7.centos.noarch.rpm
+RUN cd /etc/yum.repos.d/ && curl -O https://repository.egi.eu/sw/production/cas/1/current/repo-files/egi-trustanchors.repo
+RUN dnf update -y
+RUN dnf --enablerepo=crb install -y apptainer cvmfs HEP_OSlibs wn ui tcsh python3 && \
+    dnf clean -y all
 
-# Fix pseudoterminal in unpriv. namespace; see https://github.com/apptainer/apptainer/issues/297
-RUN yum install -y glibc-grantpt-fix && \
-    yum clean -y all
-RUN echo "libc_grantpt_fix.so  # use pty fix glibc-grantpt-fix" >> /etc/ld.so.preload
-
-# Fix for broken dcache-srmclient-6.2.24-1.noarch
-RUN yum install -y java-11-openjdk java-11-openjdk-devel java-11-openjdk-headless && \
-    yum clean -y all
-RUN alternatives --set java $(find /usr/lib/jvm/java-11* -iname java -type f | head -n 1)
+# Accept old Grid CAs
+RUN update-crypto-policies --set DEFAULT:SHA1
 
 RUN sed -i "s%allow setuid = yes%allow setuid = no%g" /etc/apptainer/apptainer.conf
 RUN sed -i "s%mount devpts = yes%mount devpts = no%g" /etc/apptainer/apptainer.conf
