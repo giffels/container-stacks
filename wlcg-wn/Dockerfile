@@ -10,6 +10,9 @@ RUN dnf update -y
 RUN dnf --enablerepo=crb install -y apptainer cvmfs HEP_OSlibs wn ui tcsh python3 && \
     dnf clean -y all
 
+# Accept old Grid CAs
+RUN update-crypto-policies --set DEFAULT:SHA1
+
 RUN sed -i "s%allow setuid = yes%allow setuid = no%g" /etc/apptainer/apptainer.conf
 RUN sed -i "s%mount devpts = yes%mount devpts = no%g" /etc/apptainer/apptainer.conf
 
