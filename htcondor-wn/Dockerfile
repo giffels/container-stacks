@@ -17,7 +17,7 @@ RUN ln -s /scratch/var/lock/condor /var/lock/condor
 RUN ln -s /scratch/var/run/condor /var/run/condor
 
 RUN rpm --import http://research.cs.wisc.edu/htcondor/yum/RPM-GPG-KEY-HTCondor
-RUN dnf install -y https://research.cs.wisc.edu/htcondor/repo/10/10.0/htcondor-release-current.el8.noarch.rpm
+RUN dnf install -y https://research.cs.wisc.edu/htcondor/repo/23.x/el8/x86_64/release/htcondor-release-23.x-1.el8.noarch.rpm
 
 RUN dnf -y install epel-release && dnf clean all
 RUN dnf config-manager --set-enabled powertools
@@ -25,7 +25,7 @@ RUN dnf -y install condor \
                    python39 \
                    ansible \
                    apptainer \
-                   openssh-server.x86_64 \
+                   openssh-server \
                    langpacks-en \
                    glibc-langpack-en \
      && dnf clean all
@@ -42,7 +42,7 @@ RUN python3.9 -m pip install --no-cache-dir condor_git_config pexpect
 RUN ansible-galaxy collection install community.general -p /usr/share/ansible/collections
 
 # Add Tini
-ENV TINI_VERSION v0.19.0
+ENV TINI_VERSION=v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
 
@@ -57,9 +57,9 @@ RUN sed -i '/^UsePrivilegeSeparation/{h;s/.*/UsePrivilegeSeparation no/g};${x;/^
 RUN sed -i '/tty/d' /etc/group
 
 # Set language settings, ansible otherwise complains
-ENV LC_ALL en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
 
 WORKDIR /scratch
 ENTRYPOINT ["/tini", "-s", "--", "/srv/pilot_execute.sh"]
